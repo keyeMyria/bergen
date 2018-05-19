@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  redis:
+    image: redis:latest
+  web:
+    build: .
+    command: python3.6 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    links:
+      - redis
+  worker:
+    build: .
+    command: python3.6 manage.py runworker channels print
+    volumes:
+      - .:/code
+    links:
+      - redis
