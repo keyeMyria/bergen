@@ -32,7 +32,7 @@ ADD . /code/
 RUN apt-get install -y gcc
 RUN apt-get install -y build-essential
 RUN pip3.6 install -vU setuptools
-RUN pip3.6 install -vU numpy==1.13.3
+RUN pip3.6 install -vU numpy
 RUN pip3.6 install -r requirements.txt
 RUN python3.6 manage.py migrate
 

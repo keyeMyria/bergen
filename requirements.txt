@@ -7,13 +7,13 @@ django-crispy-forms==1.7.2
 django-filter==1.1.0
 django-pandas==0.5.1
 djangorestframework==3.8.2
+django-oauth-toolkit
 
 docutils==0.14
 et-xmlfile==1.0.1
 future==0.16.0
 h5py==2.7.1
 jmespath==0.9.3
-numpy==1.14.2
 opencv-python==3.4.0.12
 pandas==0.22.0
 Pillow==5.1.0
