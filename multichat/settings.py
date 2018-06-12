@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'chat',
+    'social',
     'oauth2_provider',
     'rest_framework',
     'corsheaders',
@@ -97,9 +98,9 @@ OAUTH2_PROVIDER = {
 
 REST_FRAMEWORK = {
     # ...
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
+    #'DEFAULT_PERMISSION_CLASSES': (
+    #    'rest_framework.permissions.IsAuthenticated',
+    #)
 }
 
 MIDDLEWARE = [
