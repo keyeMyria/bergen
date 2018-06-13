@@ -6,7 +6,6 @@ from django.conf import settings
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from chat.logic.bioparser import loadBioMetaSeriesFromFile, loadBioImageSeriesFromFile
-from chat.models import Room
 from .exceptions import ClientError
 from .utils import get_room_or_error
 
@@ -210,7 +209,14 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         Called when the websocket is handshaking as part of initial connection.
         """
         # Are they logged in?
-        await self.accept()
+        if self.scope["user"].is_anonymous:
+            # Reject the connection
+            print("DISCONNECTING")
+            await self.close()
+        else:
+            # Accept the connection
+            print("CONNECTING")
+            await self.accept()
 
         await self.channel_layer.group_add(
             "comments",
