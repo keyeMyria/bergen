@@ -4,7 +4,7 @@ from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 
-from chat.consumers import ChatConsumer, PrintConsumer
+from chat.consumers import ChatConsumer, PrintConsumer, CommentConsumer
 
 # The channel routing defines what connections get handled by what consumers,
 # selecting on either the connection type (ProtocolTypeRouter) or properties
@@ -23,6 +23,7 @@ application = ProtocolTypeRouter({
         URLRouter([
             # URLRouter just takes standard Django path() or url() entries.
             path("chat/stream/", ChatConsumer),
+            path("comments/stream/", CommentConsumer)
         ]),
     ),
     "channel": ChannelNameRouter({
