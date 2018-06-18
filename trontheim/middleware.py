@@ -25,7 +25,7 @@ class QueryAuthMiddleware:
         auth_token = None
         try:
             auth_token = line.split('token=')[-1][0:-1]
-            print(auth_token)
+            #print(auth_token)
         except AttributeError:
             pass
 
@@ -40,14 +40,10 @@ class QueryAuthMiddleware:
             get_request.method = "GET"
             get_request.META["HTTP_AUTHORIZATION"] = "Bearer {}".format(auth_token)
 
-            print(get_request)
-
             authenticators = [auth() for auth in api_settings.DEFAULT_AUTHENTICATION_CLASSES]
-            print(authenticators)
             for authenticator in authenticators:
                 user_auth_tuple = None
                 user_auth_tuple = authenticator.authenticate(get_request)
-                print(user_auth_tuple)
                 if user_auth_tuple is not None:
                     user, auth = user_auth_tuple
                     break
