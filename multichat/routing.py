@@ -1,12 +1,10 @@
 from django.urls import path
-from rest_framework.authentication import BasicAuthentication
-from oauth2_provider.contrib.rest_framework import OAuth2Authentication
-from channels.http import AsgiHandler
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 
-from chat.authentification_helper import QueryAuthMiddleware
-from chat.consumers import ChatConsumer, PrintConsumer, CommentConsumer
+from trontheim.middleware import QueryAuthMiddleware
+from chat.consumers import ChatConsumer, PrintConsumer
+from trontheim.consumers import CommentConsumer
 
 OauthMiddleWareStack = lambda inner: QueryAuthMiddleware(AuthMiddlewareStack(inner))
 

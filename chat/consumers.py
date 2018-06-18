@@ -1,6 +1,6 @@
 import javabridge as javabridge
 import bioformats
-from channels.consumer import SyncConsumer, AsyncConsumer
+from channels.consumer import SyncConsumer
 from django.conf import settings
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
@@ -181,80 +181,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 "room": event["room_id"],
                 "username": event["username"],
             },
-        )
-
-    async def chat_message(self, event):
-        """
-        Called when someone has messaged our chat.
-        """
-        # Send a message down to the client
-        await self.send_json(
-            {
-                "msg_type": settings.MSG_TYPE_MESSAGE,
-                "room": event["room_id"],
-                "username": event["username"],
-                "message": event["message"],
-            },
-        )
-
-
-class CommentConsumer(AsyncJsonWebsocketConsumer):
-
-    def __init__(self, *args, **kwargs):
-
-        super().__init__(*args, **kwargs)
-
-    async def connect(self):
-        """
-        Called when the websocket is handshaking as part of initial connection.
-        """
-        # Are they logged in?
-        if self.scope["user"].is_anonymous:
-            # Reject the connection
-            print("DISCONNECTING")
-            await self.close()
-        else:
-            # Accept the connection
-            print("CONNECTING")
-            await self.accept()
-
-        await self.channel_layer.group_add(
-            "comments",
-            self.channel_name,
-        )
-        # Store which rooms the user has joined on this connection
-
-    async def disconnect(self, code):
-        """
-        Called when the WebSocket closes for any reason.
-        """
-        # Leave all the rooms we are still in
-        try:
-            print("LEAVING")
-
-            await self.channel_layer.group_discard(
-                "comments",
-                self.channel_name,
-            )
-        except ClientError:
-            pass
-
-    async def receive_json(self, content, **kwargs):
-        """
-        Called when we get a text frame. Channels will JSON-decode the payload
-        for us and pass it as the first argument.
-        :param **kwargs:
-        """
-        print(content)
-
-        await self.channel_layer.group_send(
-            "comments",
-            {
-                "type": "chat.message",
-                "room_id": "franz",
-                "username": "peter",
-                "message": content,
-            }
         )
 
     async def chat_message(self, event):

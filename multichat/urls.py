@@ -4,11 +4,13 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from rest_framework import routers
 
+import drawing.routes
 import social.routes
 from chat.views import index
 
 router = routers.DefaultRouter()
 router.registry.extend(social.routes.router.registry)
+router.registry.extend(drawing.routes.router.registry)
 
 
 urlpatterns = [

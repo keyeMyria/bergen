@@ -16,6 +16,23 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+# Application definition
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'channels',
+    'chat',
+    'social',
+    'drawing',
+    'oauth2_provider',
+    'rest_framework',
+    'corsheaders',
+]
+
 ##### Channels-specific settings
 
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
@@ -73,21 +90,7 @@ SECRET_KEY = 'imasecret'
 DEBUG = True
 ALLOWED_HOSTS = []
 
-# Application definition
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'channels',
-    'chat',
-    'social',
-    'oauth2_provider',
-    'rest_framework',
-    'corsheaders',
-]
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 
