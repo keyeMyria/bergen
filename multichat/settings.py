@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'chat',
     'social',
     'drawing',
+    'filterbank',
     'oauth2_provider',
     'rest_framework',
     'corsheaders',

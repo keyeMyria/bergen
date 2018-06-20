@@ -13,6 +13,9 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         Called when the websocket is handshaking as part of initial connection.
         """
         # Are they logged in?
+        if not self.scope["user"]:
+            await self.close()
+            return
         if self.scope["user"].is_anonymous:
             # Reject the connection
             print("No authentification was provided. Reject connection. Please verify that user has logged in.")
