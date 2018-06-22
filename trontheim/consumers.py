@@ -34,11 +34,12 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         Called when the WebSocket closes for any reason.
         """
         # Leave all the rooms we are still in
-        for room_id, alias in self.rooms:
-            try:
-                await self.leave_room(room_id)
-            except ClientError:
-                pass
+        if self.rooms:
+            for room_id, alias in self.rooms:
+                try:
+                    await self.leave_room(room_id)
+                except ClientError:
+                    pass
 
 
     async def join_room(self, room_id,alias):

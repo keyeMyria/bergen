@@ -17,8 +17,7 @@ router.registry.extend(filterbank.routes.router.registry)
 
 urlpatterns = [
     path('', index),
-    path('accounts/login/', login),
-    path('accounts/logout/', logout),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     path('admin/', admin.site.urls),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'^api/', include((router.urls, 'api'))),

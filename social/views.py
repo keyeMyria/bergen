@@ -30,6 +30,7 @@ class MeViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_object(self):
+        print(self.request.user)
         return self.request.user
 
     def list(self, request, *args, **kwargs):
