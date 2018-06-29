@@ -10,6 +10,8 @@ from .exceptions import ClientError
 from .utils import get_room_or_error
 
 
+
+
 class ChatConsumer(AsyncJsonWebsocketConsumer):
     """
     This chat consumer handles websocket connections for chat clients.

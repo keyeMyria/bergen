@@ -97,7 +97,7 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         except:
             print("Something went wrong")
 
-    async def chat_message(self, event):
+    async def stream(self, event):
         """
         Called when someone has messaged our chat.
         """

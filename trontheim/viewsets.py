@@ -16,7 +16,7 @@ class PublishingViewSet(viewsets.ModelViewSet):
                     value = serializer.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
                     stream = str(serializer.Meta.model.__name__)
-                    async_to_sync(channel_layer.group_send)(path, {"type": "chat.message", "stream": stream, "room": path,
+                    async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "create", "data": serializer.data})
                 except KeyError as e:
                     print("Publisher {0} does not exist on {1}".format(str(el), str(self.serializer_class.__name__)))
@@ -30,7 +30,7 @@ class PublishingViewSet(viewsets.ModelViewSet):
                     value = serializer.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
                     stream = str(serializer.Meta.model.__name__)
-                    async_to_sync(channel_layer.group_send)(path, {"type": "chat.message", "stream": stream, "room": path,
+                    async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "update", "data": serializer.data})
                 except KeyError as e:
                     print("Publisher {0} does not exist on {1}".format(str(el), str(self.serializer_class.__name__)))
@@ -43,7 +43,7 @@ class PublishingViewSet(viewsets.ModelViewSet):
                     value = serialized.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
                     stream = str(self.serializer_class.Meta.model.__name__)
-                    async_to_sync(channel_layer.group_send)(path, {"type": "chat.message", "stream": stream, "room": path,
+                    async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "delete", "data": serialized.data})
                 except KeyError as e:
                     print("Publisher {0} does not exist on {1}".format(str(el), str(self.serializer_class.__name__)))

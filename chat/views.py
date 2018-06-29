@@ -1,5 +1,8 @@
+import numpy as np
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from filterbank.models import NpArray
 from .models import Room
 
 
@@ -16,3 +19,14 @@ def index(request):
     return render(request, "index.html", {
         "rooms": rooms,
     })
+
+
+def test(request):
+
+    nana = NpArray.objects.create(filepath="nuni.h5",nparray=np.zeros((100,100,3)),position="nana")
+    nana.save()
+
+    nana.set_array(np.ones((100,100,4)))
+    print(nana.get_array())
+
+    return render(request, "index.html")

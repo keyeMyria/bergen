@@ -15,7 +15,9 @@ class ParsingRequestSerializer(serializers.ModelSerializer):
         model = ParsingRequest
         fields = "__all__"
 
-class RepresentationSerializer(serializers.HyperlinkedModelSerializer):
+class RepresentationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Representation
         fields = "__all__"
+
+

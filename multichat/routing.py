@@ -2,6 +2,7 @@ from django.urls import path
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 
+from filterbank.consumers import MaxISP
 from trontheim.middleware import QueryAuthMiddleware
 from chat.consumers import ChatConsumer, PrintConsumer
 from trontheim.consumers import CommentConsumer
@@ -30,5 +31,6 @@ application = ProtocolTypeRouter({
     ),
     "channel": ChannelNameRouter({
         "print": PrintConsumer,
+        "maxisp": MaxISP
     }),
 })

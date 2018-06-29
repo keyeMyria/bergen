@@ -2,7 +2,8 @@ Django~=2.0.0
 channels~=2.0,>=2.0.2
 channels_redis~=2.0
 django-registration-redux
-
+django-autocomplete-light
+django-taggit
 
 django-cors-headers==2.2.0
 django-crispy-forms==1.7.2
@@ -34,3 +35,5 @@ lxml==4.1.0
 
 javabridge==1.0.14
 python-bioformats==1.3.2
+
+scipy
