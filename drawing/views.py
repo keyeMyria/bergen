@@ -6,20 +6,21 @@ from rest_framework.decorators import action
 
 from rest_framework.response import Response
 
-from drawing.models import Sample, ROI
-from drawing.serializers import SampleSerializer, RoiSerializer
+from drawing.models import Sample, ROI, Experiment
+from drawing.serializers import SampleSerializer, RoiSerializer, ExperimentSerializer
 from filterbank.models import Representation
 from filterbank.serializers import RepresentationSerializer
 
 from trontheim.viewsets import PublishingViewSet
 
 
-class SampleViewSet(viewsets.ModelViewSet):
+class SampleViewSet(PublishingViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     queryset = Sample.objects.all()
     serializer_class = SampleSerializer
+    publishers = ["experiment"]
 
     @action(methods=['get'], detail=True,
             url_path='initialrep', url_name='initialrep')
@@ -37,3 +38,9 @@ class RoiViewSet(PublishingViewSet):
     queryset = ROI.objects.all()
     serializer_class = RoiSerializer
     publishers = ["sample"]
+
+class ExperimentViewSet(PublishingViewSet):
+    queryset = Experiment.objects.all()
+    serializer_class = ExperimentSerializer
+    publishers = ["creator"]
+

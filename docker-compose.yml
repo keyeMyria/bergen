@@ -14,7 +14,7 @@ services:
       - redis
   worker:
     build: .
-    command: python3.6 manage.py runworker channels print maxisp
+    command: python3.6 manage.py runworker channels print maxisp bioconverter
     volumes:
       - .:/code
     links:

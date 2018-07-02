@@ -3,7 +3,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from chat.exceptions import ClientError
 
 
-class CommentConsumer(AsyncJsonWebsocketConsumer):
+class OsloConsumer(AsyncJsonWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -12,6 +12,7 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         """
         Called when the websocket is handshaking as part of initial connection.
         """
+
         # Are they logged in?
         if not self.scope["user"]:
             await self.close()
@@ -24,7 +25,9 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
             # Accept the connection
             print("Authenntification was provided. Accepting the connection")
             await self.accept()
-            self.rooms = dict()
+
+
+        self.rooms = dict()
 
 
         # Store which rooms the user has joined on this connection
@@ -34,18 +37,23 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
         Called when the WebSocket closes for any reason.
         """
         # Leave all the rooms we are still in
-        if self.rooms:
-            for room_id, alias in self.rooms:
-                try:
-                    await self.leave_room(room_id)
-                except ClientError:
-                    pass
+        try:
+            if self.rooms:
+                for room_id, alias in self.rooms:
+                    try:
+                        await self.leave_room(room_id)
+                    except ClientError:
+                        pass
+        except:
+            pass
 
 
     async def join_room(self, room_id,alias):
         """
         Called by receive_json when someone sent a join command.
         """
+
+        #TODO: Maybe joining the same room twice is not smart?
         # Store that we're in the room
         self.rooms[room_id] = alias
         # Add them to the group so they get room messages
@@ -90,7 +98,7 @@ class CommentConsumer(AsyncJsonWebsocketConsumer):
             if command == "sub":
                 # Make them join the room
                 await self.join_room(content["room"],alias=alias)
-            elif command == "unsub":
+            elif command == "leave":
                 # Leave the room
                 await self.leave_room(content["room"])
 

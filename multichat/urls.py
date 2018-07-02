@@ -7,6 +7,8 @@ from rest_framework import routers
 import drawing.routes
 import filterbank.routes
 import social.routes
+import bioconverter.routes
+import biouploader.routes
 from chat.views import index, test
 from representations.views import TagAutocomplete
 
@@ -14,6 +16,8 @@ router = routers.DefaultRouter()
 router.registry.extend(social.routes.router.registry)
 router.registry.extend(drawing.routes.router.registry)
 router.registry.extend(filterbank.routes.router.registry)
+router.registry.extend(bioconverter.routes.router.registry)
+router.registry.extend(biouploader.routes.router.registry)
 
 
 urlpatterns = [

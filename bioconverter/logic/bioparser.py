@@ -4,7 +4,7 @@ import javabridge
 from bs4 import BeautifulSoup
 import logging, os
 
-from chat.logic.structures import BioMeta, BioImage
+from bioconverter.logic.structures import BioMeta, BioImage
 
 
 def loadBioImageFromFile(filepath) -> BioImage:
@@ -136,12 +136,11 @@ def loadBioImageSeriesFromFile(filepath, meta: BioMeta) -> np.ndarray:
 
 def loadSeriesFromFile(filepath,series) -> (BioMeta,np.ndarray):
 
-    #javabridge.start_vm(class_path=bioformats.JARS, run_headless=True)
 
     meta = loadBioMetaSeriesFromFile(filepath,series)
     image = loadBioImageSeriesFromFile(filepath,meta)
 
-    #javabridge.kill_vm()
+    javabridge.kill_vm()
 
     return meta, image
 

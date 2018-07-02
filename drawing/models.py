@@ -3,11 +3,21 @@ from django.db import models
 
 # Create your models here.
 
+class Experiment(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=1000)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Experiment {0} by {1}".format(self.name,self.creator.username)
+
+
+
 class Sample(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return "{0} by User: {1}".format(self.name,self.creator.username)
 

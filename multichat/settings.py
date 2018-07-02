@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'drawing',
     'representations',
     'filterbank',
+    'bioconverter',
+    'biouploader',
     'oauth2_provider',
     'rest_framework',
     'corsheaders',

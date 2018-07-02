@@ -2,10 +2,11 @@ from django.urls import path
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 
+from bioconverter.consumers import BioConverter
 from filterbank.consumers import MaxISP
 from trontheim.middleware import QueryAuthMiddleware
 from chat.consumers import ChatConsumer, PrintConsumer
-from trontheim.consumers import CommentConsumer
+from trontheim.consumers import OsloConsumer
 
 OauthMiddleWareStack = lambda inner: QueryAuthMiddleware(AuthMiddlewareStack(inner))
 
@@ -26,11 +27,12 @@ application = ProtocolTypeRouter({
         URLRouter([
             # URLRouter just takes standard Django path() or url() entries.
             path("chat/stream/", ChatConsumer),
-            path("comments/stream/", CommentConsumer)
+            path("oslo", OsloConsumer)
         ]),
     ),
     "channel": ChannelNameRouter({
         "print": PrintConsumer,
-        "maxisp": MaxISP
+        "maxisp": MaxISP,
+        "bioconverter": BioConverter
     }),
 })

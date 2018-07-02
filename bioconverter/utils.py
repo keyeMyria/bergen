@@ -2,6 +2,7 @@ import io
 
 import numpy as np
 from channels.db import database_sync_to_async
+from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from bioconverter.models import ConversionRequest
@@ -9,35 +10,32 @@ from filterbank.models import ParsingRequest, Representation, AImage
 
 
 @database_sync_to_async
-def get_parsingrequest_or_error(request: dict):
+def get_conversionrequest_or_error(request: dict):
     """
     Tries to fetch a room for the user, checking permissions along the way.
     """
-    print(request["id"])
-    parsing = ParsingRequest.objects.get(pk=request["id"])
+    parsing = ConversionRequest.objects.get(pk=request["id"])
     if parsing is None:
         raise ClientError("ParsingRequest {0} does not exist".format(str(request["id"])))
     return parsing
 
-
 @database_sync_to_async
-def get_inputrepresentation_or_error(request: ParsingRequest):
+def get_inputmodel_or_error(model,pk):
     """
     Tries to fetch a room for the user, checking permissions along the way.
     """
-    inputrep: Representation = Representation.objects.filter(sample=request.sample).filter(vid=request.inputvid).first()
-    if inputrep.nparray is not None:
-        array = inputrep.nparray.get_array()
-    else:
-        #TODO: This should never be called because every representation should have a nparray on creation
-        array = np.zeros((1024,1024,3))
-    if inputrep is None:
-        raise ClientError("Inputvid {0} does not exist on Sample {1}".format(str(request.inputvid), request.sample))
-    return inputrep, array
+
+    print(pk)
+    print(model)
+    inputmodel = model.objects.get(pk=pk)
+    if inputmodel is None:
+        raise ClientError("Inputmodel {0} does not exist".format(str(pk)))
+    return inputmodel
+
 
 
 @database_sync_to_async
-def update_outputrepresentation_or_create(request: ParsingRequest, numpyarray):
+def update_outputrepresentation_or_create(request: ConversionRequest, numpyarray):
     """
     Tries to fetch a room for the user, checking permissions along the way.
     """
@@ -51,7 +49,7 @@ def update_outputrepresentation_or_create(request: ParsingRequest, numpyarray):
     return outputrep
 
 @database_sync_to_async
-def update_image_onoutputrepresentation_or_error(request: ParsingRequest, original_image, path):
+def update_image_onoutputrepresentation_or_error(request: ConversionRequest, original_image, path):
     """
     Tries to fetch a room for the user, checking permissions along the way.
     """

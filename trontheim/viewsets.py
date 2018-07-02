@@ -15,6 +15,7 @@ class PublishingViewSet(viewsets.ModelViewSet):
                 try:
                     value = serializer.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
+                    print(path)
                     stream = str(serializer.Meta.model.__name__)
                     async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "create", "data": serializer.data})
@@ -42,6 +43,7 @@ class PublishingViewSet(viewsets.ModelViewSet):
                     serialized = self.serializer_class(instance)
                     value = serialized.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
+                    print(path)
                     stream = str(self.serializer_class.Meta.model.__name__)
                     async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "delete", "data": serialized.data})
