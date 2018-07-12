@@ -2,10 +2,10 @@ from django.urls import path
 from channels.routing import ProtocolTypeRouter, URLRouter, ChannelNameRouter
 from channels.auth import AuthMiddlewareStack
 
-from bioconverter.consumers import BioConverter
+from bioconverter.consumers import BioConverter, NiftiOutFlower, ImageOutFlower
 from filterbank.consumers import MaxISP
 from trontheim.middleware import QueryAuthMiddleware
-from chat.consumers import ChatConsumer, PrintConsumer
+from chat.consumers import ChatConsumer
 from trontheim.consumers import OsloConsumer
 
 OauthMiddleWareStack = lambda inner: QueryAuthMiddleware(AuthMiddlewareStack(inner))
@@ -26,13 +26,13 @@ application = ProtocolTypeRouter({
     "websocket": QueryAuthMiddleware(
         URLRouter([
             # URLRouter just takes standard Django path() or url() entries.
-            path("chat/stream/", ChatConsumer),
             path("oslo", OsloConsumer)
         ]),
     ),
     "channel": ChannelNameRouter({
-        "print": PrintConsumer,
         "maxisp": MaxISP,
-        "bioconverter": BioConverter
+        "bioconverter": BioConverter,
+        "niftioutflower": NiftiOutFlower,
+        "imageoutflower": ImageOutFlower,
     }),
 })

@@ -18,17 +18,8 @@ class FilterViewSet(viewsets.ModelViewSet):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
 
-class RepresentationViewSet(viewsets.ModelViewSet):
 
-    queryset = Representation.objects.all()
-    serializer_class = RepresentationSerializer
 
-    @action(methods=['get'], detail=True,
-            url_path='asimage', url_name='asimage')
-    def asimage(self, request):
-        representation: Representation = self.get_object()
-        image_data = representation.image.image
-        return HttpResponse(image_data, content_type="image/png")
 
 
 

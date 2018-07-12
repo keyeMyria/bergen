@@ -80,16 +80,3 @@ class MaxISP(FilterConsumer):
     async def parse(self, filtersettings: dict, numpyarray: np.array) -> np.array:
         return np.random.random(numpyarray.shape)
 
-
-
-class PrintConsumer(SyncConsumer):
-
-    def __init__(self, scope):
-        super().__init__(scope)
-
-    def print(self, message):
-        with javabridge.vm(run_headless=True, class_path=bioformats.JARS):
-            meta = loadBioMetaSeriesFromFile("test.nd2", 0)
-            image = loadBioImageSeriesFromFile("test.nd2", meta)
-
-            print(image.shape)

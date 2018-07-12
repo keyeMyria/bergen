@@ -199,15 +199,3 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             },
         )
 
-
-class PrintConsumer(SyncConsumer):
-
-    def __init__(self, scope):
-        super().__init__(scope)
-
-    def print(self, message):
-        with javabridge.vm(run_headless=True, class_path=bioformats.JARS):
-            meta = loadBioMetaSeriesFromFile("test.nd2", 0)
-            image = loadBioImageSeriesFromFile("test.nd2", meta)
-
-            print(image.shape)

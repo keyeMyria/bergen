@@ -59,11 +59,7 @@ class OverwriteStorage(FileSystemStorage):
 
 
 class AImage(models.Model):
-    image = models.ImageField(upload_to="representation_images", blank=True, null=True, storage=OverwriteStorage())
-
-class DiCom(models.Model):
-    file = models.FileField(upload_to="representation_dicoms")
-
+    image = models.ImageField(upload_to="representation_images", blank=True, null=True)
 
 
 class RepresentationManager(models.Manager):
@@ -86,6 +82,11 @@ class RepresentationManager(models.Manager):
         # Now call the super method which does the actual creation
         return super().create(**obj_data)  # Python 3 syntax!!
 
+class Dicom(models.Model):
+    file = models.FileField(upload_to="representation_dicoms")
+
+class Nifti(models.Model):
+    file = models.FilePathField()
 
 class Representation(models.Model):
     name = models.CharField(max_length=100)
@@ -94,7 +95,8 @@ class Representation(models.Model):
     sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
     nparray = models.ForeignKey(NpArray, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ForeignKey(AImage, on_delete=models.CASCADE,  blank=True, null=True)
-    dicom = models.ForeignKey(DiCom, on_delete=models.CASCADE, blank=True, null=True)
+    dicom = models.ForeignKey(Dicom, on_delete=models.CASCADE, blank=True, null=True)
+    nifti = models.ForeignKey(Nifti, on_delete=models.CASCADE, blank=True, null=True)
 
     objects = RepresentationManager()
 
@@ -126,3 +128,4 @@ class ParsingRequest(models.Model):
 
     def __str__(self):
         return "Parsing Request for Filter: {0}".format(self.filter)
+
