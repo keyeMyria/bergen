@@ -16,8 +16,11 @@ class ExperimentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class SampleSerializer(serializers.ModelSerializer):
+    bioimages =  serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    representations =  serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Sample
-        fields = "__all__"
+        fields = ("id","location","bioimages","representations","experiment","creator")
 
 

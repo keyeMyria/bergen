@@ -92,7 +92,7 @@ class Representation(models.Model):
     name = models.CharField(max_length=100)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     vid = models.IntegerField(blank=True, null=True)
-    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE,related_name='representations')
     nparray = models.ForeignKey(NpArray, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ForeignKey(AImage, on_delete=models.CASCADE,  blank=True, null=True)
     dicom = models.ForeignKey(Dicom, on_delete=models.CASCADE, blank=True, null=True)

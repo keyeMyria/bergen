@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'biouploader',
     'oauth2_provider',
     'rest_framework',
+    'django_filters',
     'corsheaders',
     'taggit'
 ]

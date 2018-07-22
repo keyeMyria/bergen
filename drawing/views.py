@@ -13,7 +13,7 @@ from filterbank.models import Representation
 from filterbank.serializers import RepresentationSerializer
 
 from trontheim.viewsets import PublishingViewSet
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 class SampleViewSet(PublishingViewSet):
     """
@@ -21,7 +21,10 @@ class SampleViewSet(PublishingViewSet):
     """
     queryset = Sample.objects.all()
     serializer_class = SampleSerializer
-    publishers = ["experiment"]
+
+    filter_backends = (DjangoFilterBackend,)
+    publishers = ["experiment","creator"]
+    filter_fields = ("creator",)
 
     @action(methods=['get'], detail=True,
             url_path='initialrep', url_name='initialrep')
@@ -43,12 +46,18 @@ class RoiViewSet(PublishingViewSet):
 class ExperimentViewSet(PublishingViewSet):
     queryset = Experiment.objects.all()
     serializer_class = ExperimentSerializer
-    publishers = ["creator"]
 
-class RepresentationViewSet(viewsets.ModelViewSet):
+    filter_backends = (DjangoFilterBackend,)
+    publishers = ["creator"]
+    filter_fields = ("creator",)
+
+class RepresentationViewSet(PublishingViewSet):
 
     queryset = Representation.objects.all()
     serializer_class = RepresentationSerializer
+    filter_backends = (DjangoFilterBackend,)
+    publishers = ["sample"]
+    filter_fields = ("sample",)
 
     @action(methods=['get'], detail=True,
             url_path='asimage', url_name='asimage')
@@ -68,3 +77,10 @@ class RepresentationViewSet(viewsets.ModelViewSet):
         response = HttpResponse(image_data, content_type="application/gzip")
         response['Content-Disposition'] = 'inline; filename="johannes.nii.gz"'
         return response
+
+
+    @action(methods=["get"], detail=False,
+            url_path="bysample", url_name="bysample")
+    def bysample(self,request):
+        return HttpResponse("404")
+

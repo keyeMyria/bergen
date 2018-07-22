@@ -42,41 +42,26 @@ class FilterConsumer(AsyncConsumer):
                 "type": "stream",
                 "stream": stream,
                 "room": returnchannel,
-                "method": "put",
+                "method": "update",
                 "data": serializer.data
             }
         )
-        # ASYNC PARSING OF THE IMAGE SUBCLASS
-        await self.toimage(request, array=array)
 
     async def parse(self, filtersettings: dict,numpyarray: np.array) -> np.array:
         raise NotImplementedError
 
 
-    async def toimage(self, request, array):
-        # TODO: Maybe faktor this one out
-        img = toimage(array)
-
-        path = "sample_{0}_vid_{1}".format(str(request.sample.pk), str(request.outputvid))
-        outputrep: Representation = await update_image_onoutputrepresentation_or_error(request,img,path)
-
-        returnchannel = "sample_{0}".format(str(request.sample.pk))
-        serializer = RepresentationSerializer(instance=outputrep)
-        stream = "representations"
-        await self.channel_layer.group_send(
-            returnchannel,
-            {
-                "type": "stream",
-                "stream": stream,
-                "room": returnchannel,
-                "method": "put",
-                "data": serializer.data
-            }
-        )
-
 
 
 class MaxISP(FilterConsumer):
     async def parse(self, filtersettings: dict, numpyarray: np.array) -> np.array:
-        return np.random.random(numpyarray.shape)
+        array = numpyarray
+        if len(array.shape) == 5:
+            array = np.nanmax(array[:,:,:3,:,0], axis=3)
+        if len(array.shape) == 4:
+            array = np.nanmax(array[:,:,:3,:], axis=3)
+        if len(array.shape) == 3:
+            array = array[:,:,:3]
+
+        return array
 

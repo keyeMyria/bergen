@@ -24,12 +24,12 @@ class PublishingViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         super().perform_update(serializer)
-        print(serializer)
         if self.publishers is not None:
             for el in self.publishers:
                 try:
                     value = serializer.data[el]
                     path = "{0}_{1}".format(str(el), str(value))
+                    print(path)
                     stream = str(serializer.Meta.model.__name__)
                     async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
                                                                    "method": "update", "data": serializer.data})

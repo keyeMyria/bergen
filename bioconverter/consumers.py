@@ -62,7 +62,7 @@ class ConverterConsumer(AsyncConsumer):
                 "type": "stream",
                 "stream": stream,
                 "room": returnchannel,
-                "method": "put",
+                "method": "update",
                 "data": serializer.data
             }
         )
@@ -139,7 +139,7 @@ class OutflowConsumer(AsyncConsumer):
                 "type": "stream",
                 "stream": stream,
                 "room": returnchannel,
-                "method": "put",
+                "method": "update",
                 "data": serializer.data
             }
         )
