@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'corsheaders',
-    'taggit'
+    'taggit',
+    'django_extensions',
 ]
 
 TAGGIT_CASE_INSENSITIVE = True # for the tags system
@@ -184,6 +185,13 @@ AUTH_PASSWORD_VALIDATORS = []
 
 LOGIN_REDIRECT_URL = "/"
 
+# This is for the jupyter interface of the stuff
+NOTEBOOK_ARGUMENTS = [
+    '--ip', '0.0.0.0',
+    '--allow-root',
+    '--no-browser',
+    "--notebook-dir=/code/notebook"
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/

@@ -29,10 +29,11 @@ WORKDIR /code
 ADD . /code/
 
 #install dependencies
+# this needs to be installed due to opencv dependencies on graphical lbraries, why no idea?
+RUN apt install -y libsm6 libxext6 libxrender-dev
 RUN apt-get install -y gcc
 RUN apt-get install -y build-essential
 RUN pip3.6 install -vU setuptools
 RUN pip3.6 install -vU numpy
 RUN pip3.6 install -r requirements.txt
-RUN python3.6 manage.py migrate
 

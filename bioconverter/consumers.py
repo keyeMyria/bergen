@@ -43,7 +43,7 @@ class ConverterConsumer(AsyncConsumer):
         inputmodel  = await self.getInputModel(request)
         #TODO: Implement parsing an array here
 
-        convertedarray = await self.convert(settings,inputmodel)
+        convertedarray = await self.convert(defaultsettings,inputmodel)
 
 
         #TODO: Implement creating a Representation here
@@ -161,7 +161,7 @@ class NiftiOutFlower(OutflowConsumer):
     async def convert(self, conversionsettings: dict, array):
         a = array
         a = np.interp(a, (a.min(), a.max()), (0, 256))
-        array = a[:, :, :, :, 0]
+        array = a[:, :, :3, :, 0]
         array = array.swapaxes(2, 3)
         print(array.max())
         test_stack = array.astype('u1')
@@ -187,6 +187,16 @@ class ImageOutFlower(OutflowConsumer):
             array = np.nanmax(array[:,:,:3,:], axis=3)
         if len(array.shape) == 3:
             array = array[:,:,:3]
+        if array.shape[2] == 1:
+            x = array[:,:,0]
+
+            # expand to what shape
+            target = np.zeros((array.shape[0],array.shape[1],3))
+
+            # do expand
+            target[:x.shape[0], :x.shape[1],0] = x
+
+            array = target
         print(array.shape)
         img = toimage(array)
         return img

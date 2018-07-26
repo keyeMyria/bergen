@@ -19,3 +19,10 @@ services:
       - .:/code
     links:
       - redis
+  notebook:
+    image: aichat_web:latest
+    command: python3.6 manage.py shell_plus --notebook
+    volumes:
+      - .:/code
+    ports:
+      - "8890:8888"

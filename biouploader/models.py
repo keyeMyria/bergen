@@ -1,5 +1,6 @@
 import os
 
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -8,6 +9,7 @@ from drawing.models import Sample
 
 class BioImage(models.Model):
     sample = models.ForeignKey(Sample,on_delete=models.CASCADE,blank=True,null=True,related_name='bioimages')
+    creator = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     file = models.FileField(verbose_name="bioimage",upload_to="bioimagefiles")
 

@@ -50,3 +50,47 @@ class PublishingViewSet(viewsets.ModelViewSet):
                 except KeyError as e:
                     print("Publisher {0} does not exist on {1}".format(str(el), str(self.serializer_class.__name__)))
         super().perform_destroy(instance)
+
+
+class OsloViewSet(viewsets.ModelViewSet):
+    #TODO: The stringpublishing is yet not working
+
+    publishers = None
+    stringpublish = True
+
+    def publish(self,serializer, method):
+        if self.publishers is not None:
+            for el in self.publishers:
+                modelfield = "empty"
+                try:
+                    path = ""
+                    for modelfield in el:
+                        value = serializer.data[modelfield]
+                        path += "{0}_{1}_".format(str(modelfield), str(value))
+                    path = path[:-1]
+                    print("Publishing to Models {0}".format(path))
+                    stream = str(serializer.Meta.model.__name__)
+                    async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
+                                                                   "method": method, "data": serializer.data})
+                except KeyError as e:
+                    print("Modelfield {0} does not exist on {1}".format(str(el), str(self.serializer_class.__name__)))
+                    if self.stringpublish and el is str:
+                        path = el
+                        print("Publishing to String {0}".format(path))
+                        stream = str(serializer.Meta.model.__name__)
+                        async_to_sync(channel_layer.group_send)(path, {"type": "stream", "stream": stream, "room": path,
+                                                                       "method": method, "data": serializer.data})
+
+
+    def perform_create(self, serializer):
+        super().perform_create(serializer)
+        self.publish(serializer,"create")
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        self.publish(serializer,"update")
+
+    def perform_destroy(self, instance):
+        serialized = self.serializer_class(instance)
+        self.publish(serialized,"delete")
+        super().perform_destroy(instance)
